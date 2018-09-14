@@ -40,9 +40,9 @@ void arrayListType<elemType>::removeAt(int location, elemType& retItem){
     if (location < 0 || location >= length)
         std::cerr << "The position of the item to be inserted is \nout of range" <<std::endl;
     else{
-        for (int i = location; i<length; i++)
-            list[i] = list[i+1];
-        length--;
+        if (length!= location)             // If the location is the end of the list the element will be
+            list[location] = list[length]; // removed when the length is deincremented. Else replace the
+        length--;                          // current loction with element at length and deincrement.
     }
 }
 
