@@ -92,6 +92,58 @@ arrayListType<elemType>::arrayListType(const arrayListType<elemType>& otherList)
     list [j] = otherList.list[j];
 }
 
+template <class elemType>
+int arrayListType<elemType>::seqSearch(const elemType& item) const
+{
+    int loc;
+    bool found = false;
+    for (loc = 0; loc < length; loc++)
+    if (list[loc] == item)
+    {
+        found = true;
+        break;
+    }
+    if (found)
+        return loc;
+    else
+        return -1;
+}
+
+template <class elemType>
+void arrayListType<elemType>::insert(const elemType& insertItem)
+{
+    int loc;
+    if (length == 0) //list is empty
+    list[length++] = insertItem; //insert the item and
+    //increment the length
+    else if (length == maxSize)
+        std::cerr << "Cannot insert in a full list." << std::endl;
+    else
+    {
+        loc = seqSearch(insertItem);
+        if (loc == -1) //the item to be inserted
+        //does not exist in the list
+        list[length++] = insertItem;
+        else
+            std::cerr << "the item to be inserted is already in the \nlist. No duplicates are allowed." << std::endl;
+    }
+}
+
+template<class elemType>
+void arrayListType<elemType>::remove(const elemType& removeItem)
+{
+    int loc;
+    if (length == 0)
+        std::cerr << "Cannot delete from an empty list." << std::endl;
+    else
+    {
+        loc = seqSearch(removeItem);
+        if (loc != -1)
+        removeAt(loc);
+        else
+            std::cout << "The item to be deleted is not in the list." << std::endl;
+    }
+}
 
 
 
