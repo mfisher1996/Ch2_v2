@@ -49,6 +49,8 @@ public:
     int daysPassed();
     int daysRemaining();
     void operator+(int days);
+    bool operator<(dateType date);
+    bool operator>(dateType date);
     int daysInMonth(int i);
 private:
     int monthDay[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -56,27 +58,6 @@ private:
     int dMonth;
     int dDay;
     int dYear;
-};
-
-class extPersonType{
-public:
-    void print() const{std::cout << firstName <<" "<< midName <<" "<< lastName  << "\n";};
-    void setName(std::string first, std::string last){firstName = first; lastName = last;};
-    void setFirst(std::string first){firstName = first;};
-    void setMid(std::string mid){midName = mid;};
-    void setLast(std::string last){lastName = last;};
-    bool checkFirst(std::string first){if(firstName == first)return 1; else return 0;};
-    bool checkLast(std::string last){if(lastName == last)return 1; else return 0;};
-    std::string getFirstName() const{return firstName;};
-    std::string getLastName() const{return lastName;};
-    extPersonType();
-    extPersonType(std::string first, std::string last){firstName = first; lastName = last;};
-private:
-    std::string firstName;
-    std::string lastName;
-    std::string midName;
-    std::string relation[3] = {"Family","Friend", "Business assosciate"};
-    int relate;
 };
 
 class addressType{
@@ -91,11 +72,57 @@ public:
     std::string getCity(){return city;};
     std::string getState(){return state;};
     int getZip(){return zipCode;};
-    void print(){std::cout <<"Address: "<<street<<"\n"<<city<<" "<<state<<".\n";};
+    void print(){std::cout <<"Address: "<<street<<"\n         "<<city<<" "<<state<<".\n";};
     
 private:
     std::string street;
     std::string city;
     std::string state;
     int zipCode;
+};
+
+class extPersonType{
+public:
+    void print() const{std::cout << firstName <<" "<< midName <<" "<< lastName  << "\n";};
+    void setName(std::string first, std::string last){firstName = first; lastName = last;};
+    void setFirst(std::string first){firstName = first;};
+    void setMid(std::string mid){midName = mid;};
+    void setLast(std::string last){lastName = last;};
+    void setNumber(int number){phone=number;};
+    void setRelate(int rel){relate =rel;};
+    bool checkFirst(std::string first){if(firstName == first)return 1; else return 0;};
+    bool checkLast(std::string last){if(lastName == last)return 1; else return 0;};
+    std::string getFirstName() const{return firstName;};
+    std::string getLastName() const{return lastName;};
+    extPersonType();
+    extPersonType(std::string first, std::string last){firstName = first; lastName = last;};
+    addressType& getAdd(){return add;};
+    dateType& getBirt(){return birthday;};
+    int getNumber(){return phone;};
+    std::string getRelate(){return relation[relate];}
+private:
+    std::string firstName;
+    std::string lastName;
+    std::string midName;
+    std::string relation[3] = {"Family","Friend", "Business assosciate"};
+    int relate;
+    int phone;
+    addressType add;
+    dateType birthday;
+};
+
+
+
+class addressBookType:public arrayListType<extPersonType>{
+public:
+    addressBookType(int size=500){length=0;maxSize=size;list=new extPersonType[maxSize];};
+    ~addressBookType(){delete list;};
+    extPersonType search(std::string lastN);
+    void loadBook();
+    void printAdd(std::string nameF, std::string nameL){for (int i = 0; i < length; i++)if(list[i].getFirstName()==nameF && list[i].getLastName()==nameL){std::cout << "Address: ";list[i].getAdd().print(); std::cout << "\nPhone: "<<list[i].getNumber(); std::cout <<"\nBirthday:";list[i].getBirt().printDate();}};
+    void print(int month);
+    void print(dateType date1, dateType date2); //""
+    void print(std::string relatetion);      //""
+    void print(std::string name1, std::string name2);//""
+    
 };

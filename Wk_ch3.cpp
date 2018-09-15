@@ -1,7 +1,7 @@
 // Implementation file for Wk_ch3.hpp classes and methods.
 
 #include "Wk_ch3.hpp"
-
+#include <fstream>
 
 template <class elemType>
 void arrayListType<elemType>::print() const{
@@ -280,7 +280,132 @@ void dateType::operator +(int days){
     }
     dDay = sum;
 }
-
+bool dateType::operator >(dateType date){
+    if(date.getYear()<=dYear){
+        if(date.getMonth() < dMonth)
+                return true;
+        else if(date.getMonth()==dMonth)
+            if(date.getDay() <dDay)
+                return true;
+    }
+    return false;
+}
+bool dateType::operator <(dateType date){
+    if(date.getYear()>=dYear){
+        if(date.getMonth() > dMonth)
+            return true;
+        else if(date.getMonth()==dMonth)
+            if(date.getDay() > dDay)
+                return true;
+    }
+    return false;
+}
 void dateType::printDate() const {
     std::cout << months[dMonth-1] <<" " << dDay <<", " <<dYear <<std::endl;
 }
+
+//*************QUESTION 9 ANSERS********************
+
+//i.
+
+/*
+ example.txt should be formatted:
+    'first name\n
+    last name\n
+    phone#\n
+    relation in int\n
+    StreetAdd\n
+    City\n
+    state\n
+    Zipcode\n
+    Birthmonth\n
+    birthday\n
+    birthyear\n
+    nextpersonFirstName\n'
+ 
+ */
+
+void addressBookType::loadBook(){
+    std::ifstream disk;
+    disk.open("example.txt");
+    std::string input;
+    int in;
+    addressType * add;
+    dateType * birth;
+    
+    do{
+        if(disk.eof())break;
+        length++;
+        disk >> input;
+        if(disk.eof())break;
+        list[length].setFirst(input);
+        input = "";
+        disk >> input;
+        list[length].setLast(input);
+        disk >> in;
+        list[length].setNumber(in);
+        disk >> in;
+        list[length].setRelate(in);
+        input = "";
+        disk >> input;
+        add = &list[length].getAdd();
+        add->setStreet(input);
+        input = "";
+        disk >> input;
+        add->setCity(input);
+        input = "";
+        disk >> input;
+        add->setState(input);
+        disk >> in;
+        add->setZip(in);
+        birth = &list[length].getBirt();
+        disk >> in;
+        birth->setMonth(in);
+        disk >> in;
+        birth->setDay(in);
+        disk >> in;
+        birth->setYear(in);
+    }while(!disk.eof());
+}
+
+// ii.
+extPersonType addressBookType::search(std::string lastN){
+    for(int i=0;i<length;i++)
+        if(list[i].getLastName()==lastN)
+            return list[i];
+    std::cerr << "Last name not found in list.\nReturning blank personType\n";
+    extPersonType per;
+    return per;
+}
+
+// iv.
+void addressBookType::print(int month){
+    for(int i=0;i<length;i++)
+        if(list[i].getBirt().getMonth()==month){
+            std::cout << list[i].getFirstName() << " " << list[i].getLastName() << ".\n";
+    }
+}
+
+void addressBookType::print(dateType date1, dateType date2){
+    for(int i =0;i<length;i++){
+        if (list[i].getBirt() > date1 && list[i].getBirt() < date2)
+        std::cout << list[i].getFirstName() <<" "<<list[i].getLastName()<<"\n";
+        
+    }
+}
+// v.
+void addressBookType::print(std::string relation){
+    std::cout <<"All contacts with relationship: "<<relation <<" are as follows:\n";
+    for (int i=0;i<length;i++)
+        if(list[i].getRelate()==relation)
+            std::cout << list[i].getFirstName() <<" "<< list[i].getLastName()<<"\n";
+}
+
+// vi.
+void addressBookType::print(std::string name1, std::string name2){
+    
+    for(int i=0;i<length;i++)
+    if(list[i].getLastName()>name1&&list[i].getLastName()<name2)
+        std::cout << list[i].getFirstName() <<" "<<list[i].getLastName()<<"\n";
+}
+
