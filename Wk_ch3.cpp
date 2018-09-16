@@ -73,7 +73,7 @@ arrayListType<elemType>::arrayListType(int size){
     length = 0;
     
     list = new elemType[maxSize];
-    assert(list != NULL);
+    
 }
 
 template <class elemType>
@@ -86,7 +86,7 @@ arrayListType<elemType>::arrayListType(const arrayListType<elemType>& otherList)
     maxSize = otherList.maxSize;
     length = otherList.length;
     list = new elemType[maxSize]; //create the array
-    assert(list != NULL); //terminate if unable to allocate
+     //terminate if unable to allocate
     //memory space
     for (int j = 0; j < length; j++) 
     list [j] = otherList.list[j];
@@ -407,5 +407,52 @@ void addressBookType::print(std::string name1, std::string name2){
     for(int i=0;i<length;i++)
     if(list[i].getLastName()>name1&&list[i].getLastName()<name2)
         std::cout << list[i].getFirstName() <<" "<<list[i].getLastName()<<"\n";
+}
+
+safeArray::safeArray(int begin, int finish){
+    start = begin;
+    end = finish;
+    length = 0;
+    while(begin<finish)
+    {
+        length++;
+        begin++;
+    }
+    list = new int[length];
+    
+}
+
+int safeArray::check(int loc){
+    if(loc < start||loc > end){
+        std::cerr << "The number "<< loc <<" is outside of the bounds of this array.\nReturning 0.\n";
+        return 0;
+    }else if(loc == end){
+        std::cerr << "The number "<< loc <<" is at the end of this array.\nReturning 0.\n";
+        return 0;
+    }
+    else{
+        for(int i=0;i<length;i++)
+            if(i==loc-start)
+                return i;
+    }
+    std::cerr << "There was some problem.\n";
+    return 0;
+}
+
+void safeArray::set(int loc, int x){
+    int i = check(loc);
+    list[i]=x;
+}
+
+int safeArray::get(int loc){
+    int i=check(loc);
+    return list[i];
+}
+
+void safeArray::print(){
+    std::cout << "The current list:\n";
+    for(int i=0;i<length;i++)
+        std::cout << list[i] << " ";
+    std::cout << "\n";
 }
 

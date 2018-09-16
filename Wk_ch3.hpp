@@ -94,7 +94,7 @@ public:
     bool checkLast(std::string last){if(lastName == last)return 1; else return 0;};
     std::string getFirstName() const{return firstName;};
     std::string getLastName() const{return lastName;};
-    extPersonType();
+    extPersonType(){};
     extPersonType(std::string first, std::string last){firstName = first; lastName = last;};
     addressType& getAdd(){return add;};
     dateType& getBirt(){return birthday;};
@@ -124,5 +124,19 @@ public:
     void print(dateType date1, dateType date2); //""
     void print(std::string relatetion);      //""
     void print(std::string name1, std::string name2);//""
+    
+};
+
+class safeArray{
+private:
+    int * list;
+    int start, end, length;
+    int check(int loc);
+public:
+    safeArray(int begin, int finish);
+    ~safeArray(){delete list;};
+    void set(int loc, int x);
+    int get(int loc);
+    void print();
     
 };
