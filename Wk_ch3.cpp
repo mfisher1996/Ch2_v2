@@ -325,13 +325,13 @@ void dateType::printDate() const {
  
  */
 
-void addressBookType::loadBook(){
+void addressBookType::loadBook(std::string name){
     std::ifstream disk;
-    disk.open("example.txt");
+    disk.open(name);
     std::string input;
     int in;
-    addressType * add;
-    dateType * birth;
+    addressType * add;      // These two pointers are not entirerly neccisary but are used to store the memory location
+    dateType * birth;       // of the dateType and addressType data members in extPearsonType.
     
     do{
         if(disk.eof())break;
@@ -369,7 +369,7 @@ void addressBookType::loadBook(){
 }
 
 // ii.
-extPersonType addressBookType::search(std::string lastN){
+extPersonType addressBookType::search(std::string lastN){       // returns the first person type that matches the last name given.
     for(int i=0;i<length;i++)
         if(list[i].getLastName()==lastN)
             return list[i];
@@ -380,6 +380,7 @@ extPersonType addressBookType::search(std::string lastN){
 
 // iv.
 void addressBookType::print(int month){
+    std::cout << "The contacts you have born in month " << month << " are:\n";
     for(int i=0;i<length;i++)
         if(list[i].getBirt().getMonth()==month){
             std::cout << list[i].getFirstName() << " " << list[i].getLastName() << ".\n";
@@ -387,6 +388,7 @@ void addressBookType::print(int month){
 }
 
 void addressBookType::print(dateType date1, dateType date2){
+    
     for(int i =0;i<length;i++){
         if (list[i].getBirt() > date1 && list[i].getBirt() < date2)
         std::cout << list[i].getFirstName() <<" "<<list[i].getLastName()<<"\n";
@@ -403,11 +405,13 @@ void addressBookType::print(std::string relation){
 
 // vi.
 void addressBookType::print(std::string name1, std::string name2){
-    
+    std::cout << "Peole in your contacts with a name after " << name1 << " and before " << name2 <<":\n";
     for(int i=0;i<length;i++)
     if(list[i].getLastName()>name1&&list[i].getLastName()<name2)
         std::cout << list[i].getFirstName() <<" "<<list[i].getLastName()<<"\n";
 }
+
+// Implementation for safeArray methods that coudn't be declared inline.
 
 safeArray::safeArray(int begin, int finish){
     start = begin;

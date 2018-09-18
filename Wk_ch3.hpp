@@ -118,7 +118,7 @@ public:
     addressBookType(int size=500){length=0;maxSize=size;list=new extPersonType[maxSize];};
     ~addressBookType(){delete list;};
     extPersonType search(std::string lastN);
-    void loadBook();
+    void loadBook(std::string name);
     void printAdd(std::string nameF, std::string nameL){for (int i = 0; i < length; i++)if(list[i].getFirstName()==nameF && list[i].getLastName()==nameL){std::cout << "Address: ";list[i].getAdd().print(); std::cout << "\nPhone: "<<list[i].getNumber(); std::cout <<"\nBirthday:";list[i].getBirt().printDate();}};
     void print(int month);
     void print(dateType date1, dateType date2); //""
